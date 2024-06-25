@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Weather</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="assets/css/Fontawesome.min.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-bs-theme="dark">
+    <!-- Start Navbar -->
+    <nav class="navbar navbar-expand-lg main-color p-4">
+        <div class="container">
+            <a class="navbar-brand -logo" href="#"><img src="assets/imgs/logo.png" alt="Weather logo"></a>
+            <a class="navbar-brand fs-6 fw-bold" href="#">Weather<br><small class="website-desc"> tagline goes here</small></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-4 align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">News</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Live cameras</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Photos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <!-- Start Header -->
+    <div class="main-container py-5">
+    <header>
+        <div class="container">
+            <form class="main-color rounded-5 form" id="locationForm">
+                <input type="text" name="location" id="locationInput" class="w-75 form-control rounded-5 p-3" placeholder="Find Your location...">
+                <button class="btn btn-lg rounded-5">Find</button>
+            </form>
+        </div>
+    </header>
+    <!-- End Header -->
+    <!-- Start Main -->
+    <main class="p-5">
+        <div class="container">
+        <div class="cards">
+        <div class="row align-items-center">
+            <div class="col-md-4 sec-color rounded-start-4 px-0 overflow-hidden" style="width: 25rem; height: 25rem;">
+                    <div class="card-title p-2 bg-opacity-50 bg-dark d-flex justify-content-between align-items-center">
+                        <span id="todaySpan"></span>
+                        <span id="todaymonth"></span>
+                    </div>
+                    <div class="card-content px-3 py-4">
+                        <span id="city"></span>
+                        <div class="todaytemperature d-flex justify-content-between me-4 py-4 align-items-center">
+                            <span id="todayDegreeMarkup" class="fw-bolder display-1"></span>
+                            <img src="" id="degreeIcon" alt="Weather Img">
+                        </div>
+                        <span id="todayWeatherStatus" class="text-info"></span>
+                        <div class="weather-info py-4">
+                            <span><img src="assets/imgs/icon-umberella.png" alt="umbrella logo" class="me-2 py-3"> <span id="umbrella"></span></span>
+                            <span><img src="assets/imgs/icon-wind.png" alt="Wind Logo" class="mx-2"><span id="wind"></span></span>
+                            <span><img src="assets/imgs/icon-compass.png" alt="compass logo" class="mx-2"><span id="compass"></span></span>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-md-4 third-color p-0" style="width: 25rem; height: 25rem;">
+                <div class="card-title p-2 bg-dark bg-opacity-50 text-center">
+                    <span id="tomorrowDateMarkup"></span>
+                </div>
+                <div class="card-content d-flex flex-column mt-4 align-items-center">
+                    <div class="content-items py-5 d-flex flex-column align-items-center gap-3">
+                        <img src="" id="tomorrowIconMarkup" alt="weather-icon">
+                        <span id="tomorrowDegreeMarkup" class="fw-bold"></span>
+                        <span id="smallDegMarkup"></span>
+                        <span id="tomorrowWeatherStatus" class="text-info"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 sec-color rounded-end-4 overflow-hidden p-0" style="width: 25rem; height: 25rem;">
+                <div class="card-title text-center p-2 bg-opacity-50 bg-dark">
+                    <span id="twoDaysDateMarkup"></span>
+                </div>
+                <div class="card-content d-flex flex-column mt-4 align-items-center">
+                    <div class="content-items py-5 d-flex flex-column align-items-center gap-3">
+                    <img src="" id="twoDaysIconMarkup" alt="weather-icon">
+                    <span id="twoDaysDegree" class="fw-bold"></span>
+                    <span id="twoDaysSmalldeg"></span>
+                    <span id="twoDaysWeatherStatus" class="text-info"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </main>
+    </div>
+    <footer class="sec-color py-5">
+        <div class="container d-flex justify-content-between align-items-center">
+        <form class="main-color rounded-5 form w-50">
+            <input type="email" id="subscribeInput" class="w-75 form-control rounded-5 p-3" placeholder="Enter your Email to subscribe...">
+            <button class="btn btn-lg rounded-5">subscribe</button>
+        </form>
+        <ul class="list-unstyled d-flex justify-content-around align-items-center w-25">
+            <li class="brands-logo"><a target="_blank" href="https://www.facebook.com/"><i class="fa-brands fa-facebook"></i></a></li>
+            <li class="brands-logo"><a target="_blank" href="https://x.com/?mx=2"><i class="fa-brands fa-twitter"></i></a></li>
+            <li class="brands-logo"><a target="_blank" href="https://www.google.com/"><i class="fa-brands fa-google-plus-g"></i></a></li>
+            <li class="brands-logo"><a target="_blank" href="https://www.pinterest.com/"><i class="fa-brands fa-pinterest"></i></a></li>
+        </ul>
+    </div>
+    <p class="text-center mt-2 mb-0 pt-3">Copyright 2014 Company name. Designed by Themezy. All rights reserved</p>
+    </footer>
+    <!-- End Main -->
+    <!-- Bootstrap JS -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!-- Main JS -->
+    <script src="assets/js/index.js"></script>
+</body>
+</html>
