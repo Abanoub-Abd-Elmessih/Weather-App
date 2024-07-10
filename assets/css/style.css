@@ -1,89 +1,29 @@
-.main-color{
-    background-color: #1E202B;
+a{
+    color: inherit;
 }
-.sec-color{
-    background-color: #323544;
+.form-control:focus { 
+    box-shadow: 1px 1px 0 1px #A0DEFF;
 }
-.third-color{
-    background-color: #262936;
-}
-/* Start Navbar */
-.navbar .nav-item .active {
-    border: solid 2px #009AD8;
-    border-radius: 50px;
-    color: #009AD8 !important;
-    padding: 5px 25px;
-}
-.navbar .nav-link {
-    color: white !important;
-    border: 2px solid transparent;
-    border-radius: 50px;
-    transition: all 0.5s;
-    padding: 5px 25px !important;
-}
-.navbar .nav-link:hover {
-    border: solid 2px #009AD8;
-    border-radius: 50px;
-    color: #009AD8 !important;
-}
-.website-desc {
-    font-weight: 300;
-    font-size: 10px;
-    font-family: sans-serif;
-    color: rgb(191, 193, 200);
-}
-/* End Navbar */
-/* Start Main */
-.main-container{
-    background-image: url(../imgs/banner.png);
-    background-repeat: no-repeat;
-    background-position: top;
-}
-.form-control:focus{
-    background-color: #1E202B;
-    border: none;
-    box-shadow: none;
-    outline: none;
-}
-.form-control{
-    background-color: #1E202B;
-    border: none;
-    box-shadow: none;
-    outline: none;
-    width: 75% !important;
-}
-.form{
-    width: 100%;
-    position: relative;
-}
-.form button{
-    position: absolute;
-    top: 7px;
-    right: 7px;
-    padding: 5px 25px;
-    background-color: #009AD8;
-}
-.form button:hover{
-    background-color: #009AD8;
-}
-/* end Main */
-/* Start Footer */
-.brands-logo{
-    background-color: #262936;
-    color: #009AD8;
-    width: 50px;
-    height: 50px;
+.brands-icon{
     font-size: 25px;
+    border: 30px;
+    width: 45px;
+    height: 45px;
     border-radius: 50px;
-    transition: all 0.5s;
+    background-color: #4D869C;
+    color: white;
+    margin: 0 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    transition: all 0.5s;
 }
-.brands-logo:hover{
-    background-color: #009AD8;
-    color: white;
-
+.brands-icon:hover{
+    background-color: #343A40;
 }
-/* End Footer */
+.closeBtn {
+    display: none;
+    position: absolute;
+    right: 50px; 
+}

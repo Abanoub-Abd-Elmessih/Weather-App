@@ -1,120 +1,111 @@
-let todaySpan = document.getElementById('todaySpan');
-let todaymonth = document.getElementById('todaymonth');
-let locationInput=document.getElementById('locationInput');
-let city=document.getElementById('city');
-let todayDegreeMarkup=document.getElementById('todayDegreeMarkup');
-let todayWeatherStatus=document.getElementById('todayWeatherStatus');
-let umbrella=document.getElementById('umbrella');
-let degreeIcon=document.getElementById('degreeIcon');
-let wind=document.getElementById('wind');
-let compass=document.getElementById('compass');
-let tomorrowDateMarkup=document.getElementById('tomorrowDateMarkup');
-let tomorrowIconMarkup=document.getElementById('tomorrowIconMarkup');
-let tomorrowDegreeMarkup=document.getElementById('tomorrowDegreeMarkup');
-let smallDegMarkup=document.getElementById('smallDegMarkup');
-let tomorrowWeatherStatus=document.getElementById('tomorrowWeatherStatus');
-let twoDaysDateMarkup=document.getElementById('twoDaysDateMarkup');
-let twoDaysIconMarkup=document.getElementById('twoDaysIconMarkup');
-let twoDaysDegree=document.getElementById('twoDaysDegree');
-let twoDaysSmalldeg=document.getElementById('twoDaysSmalldeg');
-let twoDaysWeatherStatus=document.getElementById('twoDaysWeatherStatus');
+'use strict';
+const BASE_URL = `https://api.weatherapi.com/v1`;
+const searchInput = document.getElementById('documentSearchInput');
+const TodayCard = document.getElementById('TodayCard');
+const TomorrowCard = document.getElementById('TomorrowCard');
+const afterTomorrowCard = document.getElementById('afterTomorrowCard');
 
-const BASE_URL = 'https://api.weatherapi.com/v1';
+// Event Listeners
+$('#documentSearchInput').on('input', function () {
+    let closeBtn = $('.closeBtn');
 
-// Events Listeners
-locationInput.addEventListener('input' , function(e){
-    getWeatherData(e.target.value);
-})
-let locationForm = document.getElementById('locationForm');
-locationForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-}); 
+    if (this.value.trim() !== '') {
+        closeBtn.fadeIn(200);
+    } else {
+        closeBtn.fadeOut(200);
+    }
 
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-        function(position) {
-            const lat = position.coords.latitude;
-            const long = position.coords.longitude;
-            getWeatherData(`${lat},${long}`);
-        },
-        function(error) {
-            // Default to Cairo if location access is denied
-            if (error.code == error.PERMISSION_DENIED) {
-                getWeatherData('Cairo');
+    getWeatherData(this.value);
+});
+
+// Event listener for close button click
+$('.closeBtn').on('click', function () {
+    $('#documentSearchInput').val('');
+    $(this).fadeOut(200);
+});
+
+// GPS Check Functionality
+(function () {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                let latitude = position.coords.latitude;
+                let longitude = position.coords.longitude;
+                getWeatherData(`${latitude},${longitude}`);
+            },
+            function (error) {
+                if (error.code === error.PERMISSION_DENIED) {
+                    getWeatherData('Cairo');
+                }
             }
-        }
-    );
-} else {
-    alert('Cannot find Location');
-    // Default to Cairo if geolocation is not supported
-    getWeatherData('Cairo');
-}
+        );
+    } else {
+        // Default to Cairo if geolocation is not supported
+        alert('Cannot find Location');
+        getWeatherData('Cairo');
+    }
+})();
 
-
-// Function to get weather data
-async function getWeatherData(query){
+// Get Data Functionality
+async function getWeatherData(query) {
     try {
         let response = await fetch(`${BASE_URL}/forecast.json?q=${query}&days=3&key=b149ae5e8f034f65b76110641242206`);
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-        }
         let data = await response.json();
-        displayTodayWeather(data);
-        displayTommorrowWeather(data);
-        displaytwoDaysWeather(data);
+        console.log(data);
+        displayWeatherData(data);
     } catch (error) {
-        console.error('There has been a problem with your fetch operation:', error);
+        console.log("Error occurred:", error);
     }
 }
 
-function displayTodayWeather(data){
-    let date = new Date(data.current.last_updated);
-    const todayDate = date.toLocaleString('en-us',{weekday:'long'});
-    const monthDate = date.getDate();
-    const monthString = date.toLocaleString('en-us' ,{month:'long'});
-    const cityName = data.location.name;
-    const todayDegree =data.current.temp_c;
-    const tempStatus =data.current.condition.text;
-    const tempIcon = data.current.condition.icon;
-    const humidity =data.current.humidity;
-    const windJS= data.current.wind_kph;
-    const windDir= data.current.wind_dir;
-
-    todaySpan.innerHTML=todayDate;
-    todaymonth.innerHTML=`${monthDate} ${monthString}`;
-    city.innerHTML=cityName;
-    todayDegreeMarkup.innerHTML=todayDegree;
-    todayWeatherStatus.innerHTML=tempStatus;
-    degreeIcon.setAttribute('src', tempIcon.startsWith('https') ? tempIcon : `https:${tempIcon}`);
-    umbrella.innerHTML=humidity;
-    wind.innerHTML=windJS;
-    compass.innerHTML=windDir;
+// Function to update weather card content
+function WeatherCard(dayDate, dayNum, month, city, dayDegree, iconUrl, dayStatus, dayHumidity, dayWind, dayWindDir = 'NW', card) {
+    let cardContent = `
+        <div class="card bg-light-subtle border-0 rounded-4" style="height: 25rem;">
+            <h5 class="card-title bg-dark bg-opacity-50 py-2 px-3 mb-2 d-flex justify-content-between fw-light">
+                <span>${dayDate}</span>
+                <span>${dayNum} ${month}</span>
+            </h5>
+            <div class="card-body text-start p-4">
+                <span class="fs-4 text-info fw-semibold">${city}</span>
+                <div class="card-temp d-flex justify-content-between align-items-center py-4 mb-2">
+                    <span class="fw-bolder display-1">${dayDegree}</span>
+                    <img src="${iconUrl}" class="w-25" alt="Weather Icon">
+                </div>
+                <span class="text-info fw-semibold fs-5">${dayStatus}</span>
+                <div class="card-info pt-5">
+                    <span class="me-3"><img src="assets/imgs/icon-umberella.png" alt="umbrella icon" class="me-2">${dayHumidity}</span>
+                    <span class="me-3"><img src="assets/imgs/icon-wind.png" alt="Wind Icon" class="me-2">${dayWind}</span>
+                    <span><img src="assets/imgs/icon-compass.png" alt="Compass Icon" class="me-2">${dayWindDir}</span>
+                </div>
+            </div>
+        </div>`;
+    
+    card.innerHTML = cardContent;
 }
 
-function displayTommorrowWeather({forecast}){
-    const tomorrowDate = new Date(forecast.forecastday[1].date).toLocaleString('en-us' ,{weekday:'long'});
-    const tomorrowIcon = forecast.forecastday[1].day.condition.icon;
-    const tomorrowDegree = forecast.forecastday[1].day.maxtemp_c;
-    const tomorrowSmallDegree = forecast.forecastday[1].day.mintemp_c;
-    const tomorrowStatus = forecast.forecastday[1].day.condition.text;
-
-    tomorrowDateMarkup.innerHTML =tomorrowDate;
-    tomorrowIconMarkup.setAttribute('src', tomorrowIcon.startsWith('https') ? tomorrowIcon : `https:${tomorrowIcon}`);
-    tomorrowDegreeMarkup.innerHTML=tomorrowDegree;
-    smallDegMarkup.innerHTML=tomorrowSmallDegree;
-    tomorrowWeatherStatus.innerHTML= tomorrowStatus;
+// Function to display weather data
+function displayWeatherData(data) {
+    displayDayWeather(data, 0, TodayCard);
+    displayDayWeather(data, 1, TomorrowCard);
+    displayDayWeather(data, 2, afterTomorrowCard);
 }
 
-function displaytwoDaysWeather({forecast}){
-    const twoDaysDateJS = new Date(forecast.forecastday[2].date).toLocaleString('en-us' ,{weekday:'long'});
-    const twoDaysIconJS = forecast.forecastday[2].day.condition.icon;
-    const twoDaysDegreeJS = forecast.forecastday[2].day.maxtemp_c;
-    const twoDaysSmallDegJS = forecast.forecastday[2].day.mintemp_c;
-    const TwoDaysStatusJS = forecast.forecastday[2].day.condition.text;
+// Function to display weather for a specific day
+function displayDayWeather(data, index, card) {
+    let dayData = data.forecast.forecastday[index];
+    let date = new Date(dayData.date);
+    let dayDate = date.toLocaleString('en-us', { weekday: 'long' });
+    let dayNum = date.getDate();
+    let month = date.toLocaleString('en-us', { month: 'long' });
+    let city = data.location.name;
+    let dayDegree = dayData.day.avgtemp_c;
+    let iconUrl = dayData.day.condition.icon.startsWith('https') ? dayData.day.condition.icon : (dayData.day.condition.icon.startsWith('//') ? `https:${dayData.day.condition.icon}` : `https://example.com/${dayData.day.condition.icon}`);
+    let dayStatus = dayData.day.condition.text;
+    let dayHumidity = dayData.day.avghumidity;
+    let dayWind = dayData.day.maxwind_kph;
+    let dayWindDir = dayData.day.wind_dir;
 
-    twoDaysDateMarkup.innerHTML =twoDaysDateJS;
-    twoDaysIconMarkup.setAttribute('src', twoDaysIconJS.startsWith('https') ? twoDaysIconJS : `https:${twoDaysIconJS}`);
-    twoDaysDegree.innerHTML=twoDaysDegreeJS;
-    twoDaysSmalldeg.innerHTML=twoDaysSmallDegJS;
-    twoDaysWeatherStatus.innerHTML=TwoDaysStatusJS;
+    WeatherCard(dayDate, dayNum, month, city, dayDegree, iconUrl, dayStatus, dayHumidity, dayWind, dayWindDir, card);
 }
+
